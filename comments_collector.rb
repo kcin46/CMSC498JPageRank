@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require_relative "node.rb"
 
 uri = URI("https://www.reddit.com/r/all/top/.json")
 params = { :sort => "top", :t=>"month" ,:limit =>100}
@@ -33,11 +34,22 @@ posts.each{
 	full_link = "https://www.reddit.com" + relative_link + ".json"
 	full_links << full_link
 }
+
+def get_json(link)
+	json = nil
+	begin
+		uri = URI(link+"/.json")
+		res = Net::HTTP.get_response(uri)
+		json = JSON.load(res.body)
+	rescue
+		return get_json(link)
+	end 
+	return json
+end
 def get_comments(link,more_ids, comments_text,visited)
-	puts link
-	uri = URI(link+"/.json")
-	res = Net::HTTP.get_response(uri)
-	json = JSON.load(res.body)
+	# puts link
+
+	json = get_json(link)
 
 	json[1]["data"]["children"].each{
 		|root_comment|
@@ -87,11 +99,16 @@ def random_fun (link,more_ids,comments_text,visited)
 	i =0 ;
 
 	total = more_ids.length
-	puts "-----#{more_ids.length}----"
-	more_ids.each_slice(20) {|a| 
-		Thread.new{apply(a,link,more_ids,comments_text,visited)}
+	# puts "-----#{more_ids.length}----"
+	threads = []
+	more_ids.each_slice(100) {|a| 
+		 t = Thread.new{apply(a,link,more_ids,comments_text,visited)}
+		 threads << t
 	}	
-
+	threads.each{
+		|thread|
+		thread.join()
+	}
 	# more_ids.each{
 	# 	|id|
 	# 	puts "inside block"
@@ -106,21 +123,18 @@ def random_fun (link,more_ids,comments_text,visited)
 	# 	STDOUT.flush
 	# 	puts "iteration #{i} of #{total}"
 	# }
-	puts comments_text
+	# puts comments_text
 end
 
 def apply(ids,link,more_ids,comments_text,visited)
 	ids.each{
 		|id|
-		puts "inside block"
-		if(visited[id] ==nil)
-			puts id
-			visited[id] = true
-			new_link = link+"/"+id
-			puts new_link
-			get_comments(new_link,more_ids,comments_text,visited)
-		end
-	}
+
+		new_link = link+"/"+id
+	
+		get_comments(new_link,more_ids,comments_text,visited)
+		STDOUT.flush
+}
 end
 more_ids =[]
 comments = []
@@ -128,3 +142,4 @@ visited = Hash.new ()
 link = "https://www.reddit.com/r/videos/comments/4fmy7a/stoners_get_caught_smoking_under_a_parachute"
 get_comments(link, more_ids,comments,visited )
 random_fun(link,more_ids,comments,visited)
+puts comments
