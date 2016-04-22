@@ -46,7 +46,7 @@ def get_json(link)
 	end 
 	return json
 end
-def get_comments(link,more_ids, comments_text,visited)
+def get_comments(link,more_ids, comments_text)
 	# puts link
 
 	json = get_json(link)
@@ -94,52 +94,35 @@ def get_comments_helper (comment, comments_text, more_ids)
 	end
 end
 
-def random_fun (link,more_ids,comments_text,visited)
+def traverse_more (link,more_ids,comments_text)
 
 	i =0 ;
 
 	total = more_ids.length
-	# puts "-----#{more_ids.length}----"
 	threads = []
 	more_ids.each_slice(100) {|a| 
-		 t = Thread.new{apply(a,link,more_ids,comments_text,visited)}
+		 t = Thread.new{apply(a,link,more_ids,comments_text)}
 		 threads << t
 	}	
 	threads.each{
 		|thread|
 		thread.join()
 	}
-	# more_ids.each{
-	# 	|id|
-	# 	puts "inside block"
-	# 	if(visited[id] ==nil)
-	# 		puts id
-	# 		visited[id] = true
-	# 		new_link = link+"/"+id
-	# 		puts new_link
-	# 		get_comments(new_link,comments_text,more_ids,visited)
-	# 	end
-	# 	i= i +1
-	# 	STDOUT.flush
-	# 	puts "iteration #{i} of #{total}"
-	# }
-	# puts comments_text
+
 end
 
-def apply(ids,link,more_ids,comments_text,visited)
+def apply(ids,link,more_ids,comments_text)
 	ids.each{
 		|id|
 
 		new_link = link+"/"+id
 	
-		get_comments(new_link,more_ids,comments_text,visited)
+		get_comments(new_link,more_ids,comments_text)
 		STDOUT.flush
 }
 end
 more_ids =[]
 comments = []
-visited = Hash.new ()
 link = "https://www.reddit.com/r/videos/comments/4fmy7a/stoners_get_caught_smoking_under_a_parachute"
-get_comments(link, more_ids,comments,visited )
-random_fun(link,more_ids,comments,visited)
-puts comments
+get_comments(link, more_ids,comments )
+traverse_more(link,more_ids,comments)
