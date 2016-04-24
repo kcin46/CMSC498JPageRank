@@ -126,3 +126,4 @@ comments = []
 link = "https://www.reddit.com/r/videos/comments/4fmy7a/stoners_get_caught_smoking_under_a_parachute"
 get_comments(link, more_ids,comments )
 traverse_more(link,more_ids,comments)
+puts comments
