@@ -93,7 +93,7 @@ def apply(ids,link,more_ids,comments_text)
 end
 
 def get_posts(uri,subreddits)
-	puts uri
+	
 	res = Net::HTTP.get_response(uri)
 	json = JSON.load(res.body)
 	posts = json['data']["children"]
@@ -109,9 +109,10 @@ def get_posts(uri,subreddits)
 		full_link = "https://www.reddit.com" + relative_link + ".json"
 		if(subreddit == nil && subreddits.keys.length <100)
 			subreddits[subreddit_name] = SubredditInfo.new(subreddit_name, [full_link])
+			subreddits[subreddit_name].posts_map[post_id] = true
 		elsif(subreddits.keys.length <100)
 			if(subreddit.posts.length < 3)
-				
+				subreddit.posts_map[post_id] = true
 				subreddit.add_post(full_link)
 				full_links << full_link
 			end
@@ -120,6 +121,7 @@ def get_posts(uri,subreddits)
 	}
 	return post_id
 end
+
 def get_top_100_unique()
 	uri = URI("https://www.reddit.com/r/all/top/.json")
 	params = { :sort => "top", :t=>"day" ,:limit =>100}
@@ -134,20 +136,81 @@ def get_top_100_unique()
 		uri.query = URI.encode_www_form(params)
 		last_post =get_posts(uri,subreddits)
 	end
-	puts "number of subreddits: #{subreddits.keys.length}"
-	subreddits.values.each{
-		|sub|
-		puts "name: #{sub.name} links:#{sub.posts}"
+
+	return subreddits
+end
+
+def add_post(subreddit)
+	uri = URI("https://www.reddit.com/r/"+subreddit.name+"/top/.json")
+	params = { :sort => "top", :t=>"day" ,:limit =>100}
+	uri.query = URI.encode_www_form(params)
+	res = Net::HTTP.get_response(uri)
+	json = JSON.load(res.body)
+	posts = json['data']["children"]
+	posts.each{
+		|post|
+		relative_link= post["data"]["permalink"]
+		full_link = "https://www.reddit.com" + relative_link + ".json"
+		post_id=  post["data"]["name"]
+		if(subreddit.posts_map[post_id] ==nil)
+			subreddit.posts_map[post_id] == nil
+			subreddit.posts << full_link
+		
+		end
+		if(subreddit.posts.length >=3)
+			return
+		end
 	}
 end
+
+def find_not_finished(subreddits)
+	subreddits.values.each{
+		|sub|
+
+		if(sub.posts.length<3)
+			add_post(sub)
+		end
+
+	}
+	subreddits.values.each{
+		|sub|
+		puts "name: #{sub.name} links: #{sub.posts}"
+	}
+end
+
+def get_comments_by_sub(sub)
+	all_comments = []
+	sub.posts.each{
+		|link|
+	
+		more_ids = []
+		get_comments(link,more_ids,all_comments)
+		traverse_more(link,more_ids,all_comments)
+
+	}
+	return all_comments
+end
+
 def main 
-	get_top_100_unique()
-	more_ids =[]
-	comments = []
-	link = "https://www.reddit.com/r/videos/comments/4fmy7a/stoners_get_caught_smoking_under_a_parachute"
-	get_comments(link, more_ids,comments )
-	traverse_more(link,more_ids,comments)
-	puts comments
+	subreddits = get_top_100_unique()
+	find_not_finished(subreddits)
+	comments_map = Hash.new ()
+	puts "Getting Comments Now"
+	subreddits.values.each{
+		|sub|
+		sub_comments = get_comments_by_sub(sub)
+		comments_map[sub.name] = sub_comments
+	}
+
+	puts "completed getting comments"
+	comments_map.keys.each{
+		|sub_name|
+		comments = comments_map[sub_name]
+		puts "subreddit: #{sub_name}"
+		puts comments
+		puts "---------------------------------"
+	}
+
 end
 
 main()
