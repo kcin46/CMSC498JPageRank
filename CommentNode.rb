@@ -1,4 +1,3 @@
-class CommentNode
 	attr_accessor "text" , "from", "to"
 	def initialize(text, from,to)
 		@text = text	
