@@ -1,44 +1,15 @@
 require 'net/http'
 require 'json'
-require_relative "node.rb"
+# require_relative "CommentNode.rb"
+# require_relative "SubredditNode.rb"
+require_relative "SubredditInfo.rb"
 
-uri = URI("https://www.reddit.com/r/all/top/.json")
-params = { :sort => "top", :t=>"month" ,:limit =>100}
-uri.query = URI.encode_www_form(params)
-
-res = Net::HTTP.get_response(uri)
-json = JSON.load(res.body)
-array_of_posts = json['data']["children"]
-
-
-def select_random_posts(array_of_posts )
-	result = []
-	numbers_selected = {}
-	30.times{
-		
-		index = rand(99)
-		while(numbers_selected[index] != nil)
-			index= rand(99)
-		end
-		numbers_selected[index] = index
-		post =  array_of_posts[index]
-		result << post
-	}
-	return result
-end
-posts = select_random_posts(array_of_posts)
-full_links = []
-posts.each{
-	|post|
-	relative_link= post["data"]["permalink"]
-	full_link = "https://www.reddit.com" + relative_link + ".json"
-	full_links << full_link
-}
 
 def get_json(link)
 	json = nil
 	begin
-		uri = URI(link+"/.json")
+		uri = URI(link)
+		# puts uri
 		res = Net::HTTP.get_response(uri)
 		json = JSON.load(res.body)
 	rescue
@@ -114,16 +85,96 @@ end
 def apply(ids,link,more_ids,comments_text)
 	ids.each{
 		|id|
-
-		new_link = link+"/"+id
+		link2 = link.dup
+		
+		link2 = link[0..(link.length-6)]
 	
+		new_link = link2+id+"/.json"
+		
 		get_comments(new_link,more_ids,comments_text)
 		STDOUT.flush
 }
 end
-more_ids =[]
-comments = []
-link = "https://www.reddit.com/r/videos/comments/4fmy7a/stoners_get_caught_smoking_under_a_parachute"
-get_comments(link, more_ids,comments )
-traverse_more(link,more_ids,comments)
-puts comments
+
+
+
+
+
+
+
+def get_comments_by_sub(sub)
+	all_comments = []
+	sub.posts.each{
+		|link|
+	
+		more_ids = []
+		get_comments(link,more_ids,all_comments)
+		traverse_more(link,more_ids,all_comments)
+
+	}
+	return all_comments
+end
+
+def read_jobs_file(jobs_file)
+	file = File.open(jobs_file,"r")
+	json_string = ""
+	file.each{
+		|line|
+		json_string += line
+	}
+	return JSON.load(json_string)
+end
+
+
+def main 
+	job_num = ARGV[0]
+	jobs_file = ARGV[1]
+	if job_num == nil
+		raise(ArgumentError, "please provide your assigned job number")
+	end
+	if jobs_file ==nil
+		raise(ArgumentError, "Please provide the jobs file")
+	end
+	
+	json_jobs= read_jobs_file(jobs_file)
+	my_job= json_jobs[Integer(job_num)]
+	
+	comments_map = Hash.new {  }
+	# puts "Getting Comments Now"
+
+	my_job.each{
+		|sub_package|
+		sub_name = sub_package["sub_name"]
+		links = sub_package["links"]
+		if(comments_map[sub_name] == nil)
+			comments_map[sub_name] = []
+		end
+		links.each{
+			|link|
+			comments = []
+			more_ids = []
+			get_comments(link,more_ids,comments)
+			traverse_more(link, more_ids,comments)
+			comments_map[sub_name] << comments
+		}	
+		puts "completed a sub package"
+		puts comments_map
+
+	}
+	results = JSON.generate(comments_map)
+	f=File.new("jobs_result")
+
+	f.puts results
+
+
+
+
+end
+
+main()
+# comments = []
+# more_ids = []
+# link = "https://www.reddit.com/r/mildlyinfuriating/comments/4g82xn/my_provider_censoring_me_on_my_own_phone"
+# get_comments(link, more_ids,comments)
+# traverse_more(link,more_ids,comments)
+# a= JSON.generate({"sub" => "mildlyinfuriating", "comments" => comments})
