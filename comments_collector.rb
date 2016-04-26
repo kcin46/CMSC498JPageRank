@@ -71,7 +71,7 @@ def traverse_more (link,more_ids,comments_text)
 
 	total = more_ids.length
 	threads = []
-	more_ids.each_slice(100) {|a| 
+	more_ids.each_slice(50) {|a| 
 		 t = Thread.new{apply(a,link,more_ids,comments_text)}
 		 threads << t
 	}	
@@ -101,7 +101,25 @@ end
 
 
 
-
+def split_by_sub (comments_map,sub_package)
+	sub_name = sub_package["sub_name"]
+	links = sub_package["links"]
+	if(comments_map[sub_name] == nil)
+		comments_map[sub_name] = []
+	end
+	links.each{
+		|link|
+		comments = []
+		more_ids = []
+		get_comments(link,more_ids,comments)
+		traverse_more(link, more_ids,comments)
+		comments_map[sub_name] << comments
+	}	
+	puts "completed a sub package"
+	puts comments_map
+	f2 = File.new(sub_name+"_json", "w")
+	f2.puts JSON.generate(comments_map)
+end
 def get_comments_by_sub(sub)
 	all_comments = []
 	sub.posts.each{
@@ -141,28 +159,19 @@ def main
 	
 	comments_map = Hash.new {  }
 	# puts "Getting Comments Now"
-
+	f=File.new("jobs_result", "w")
+	threads = []
 	my_job.each{
 		|sub_package|
-		sub_name = sub_package["sub_name"]
-		links = sub_package["links"]
-		if(comments_map[sub_name] == nil)
-			comments_map[sub_name] = []
-		end
-		links.each{
-			|link|
-			comments = []
-			more_ids = []
-			get_comments(link,more_ids,comments)
-			traverse_more(link, more_ids,comments)
-			comments_map[sub_name] << comments
-		}	
-		puts "completed a sub package"
-		puts comments_map
-
+		t = Thread.new{split_by_sub(comments_map, sub_package)}
+		threads << t
+	}	
+	threads.each{
+		|thread|
+		thread.join(14400)
 	}
+	
 	results = JSON.generate(comments_map)
-	f=File.new("jobs_result")
 
 	f.puts results
 
