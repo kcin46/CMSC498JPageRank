@@ -30,7 +30,7 @@ end
 def pageRank(graph)
 	rank = {}
 	updatedRank = {}
-	k = 1
+	k = 2
 	init_rank = Rational(1, graph.keys.length).to_f
 
 	#Initalizes each node to have 1/n as its rank
