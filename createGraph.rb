@@ -1,6 +1,6 @@
 require_relative 'CommentNode'
 require_relative 'SubredditNode'
-
+require_relative 'load_comments'
 def createGraph(comments)
 	graph = {}
 	
@@ -56,27 +56,35 @@ def pageRank(graph)
 			#puts rank
 			break
 		else
-			rank = updatedRank
+			rank = updatedRank.clone
 		end
 	end
 	
 	return rank
 end
 
-a = CommentNode.new("","a" ,"b")
-b = CommentNode.new("","a", "c") 
-c = CommentNode.new("", "d", "a")
-d = CommentNode.new("","g" ,"a")
-e = CommentNode.new("","d" ,"h")  
-f = CommentNode.new("", "b", "d")
-g = CommentNode.new("","b","e")  
-h = CommentNode.new("", "e", "h")
-i = CommentNode.new("","e", "a") 
-j = CommentNode.new("", "h", "a")
-k = CommentNode.new("","c", "f")
-l = CommentNode.new("", "c", "g")
-m = CommentNode.new("","f", "a")
-comments = [a,b,c,d,e,f,g,h,i,j,k,l,m]
-res = createGraph(comments)
+def main
+	a = CommentNode.new("","a" ,"b")
+	b = CommentNode.new("","a", "c") 
+	c = CommentNode.new("", "d", "a")
+	d = CommentNode.new("","g" ,"a")
+	e = CommentNode.new("","d" ,"h")  
+	f = CommentNode.new("", "b", "d")
+	g = CommentNode.new("","b","e")  
+	h = CommentNode.new("", "e", "h")
+	i = CommentNode.new("","e", "a") 
+	j = CommentNode.new("", "h", "a")
+	k = CommentNode.new("","c", "f")
+	l = CommentNode.new("", "c", "g")
+	m = CommentNode.new("","f", "a")
+	comments = [a,b,c,d,e,f,g,h,i,j,k,l,m]
+	res = createGraph(comments)
+	ranks = pageRank(res)
+	puts ranks
+	h = {"askreddit" => 1.3 , "pics" => 0.1 ,}
+	actual = ["pics" , "askreddit", ""]
+end
+comments =load_all()
+res= createGraph(comments)
 ranks = pageRank(res)
-puts ranks
+ranks.sort {|a,b| a[1] <=> b[1]}.each{ |country| print country[0],"\n" }

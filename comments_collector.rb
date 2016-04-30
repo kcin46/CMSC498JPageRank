@@ -17,6 +17,7 @@ def get_json(link)
 	end 
 	return json
 end
+
 def get_comments(link,more_ids, comments_text)
 	# puts link
 
@@ -181,9 +182,3 @@ def main
 end
 
 main()
-# comments = []
-# more_ids = []
-# link = "https://www.reddit.com/r/mildlyinfuriating/comments/4g82xn/my_provider_censoring_me_on_my_own_phone"
-# get_comments(link, more_ids,comments)
-# traverse_more(link,more_ids,comments)
-# a= JSON.generate({"sub" => "mildlyinfuriating", "comments" => comments})
