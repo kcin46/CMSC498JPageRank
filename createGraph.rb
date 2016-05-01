@@ -3,7 +3,7 @@ require_relative 'SubredditNode'
 require_relative 'load_comments'
 def createGraph(comments)
 	graph = {}
-	
+
 	comments.each { |c|
 		#Create a SubredditNode for from or to if need be
 		if(!graph.keys.include?(c.from))
@@ -23,7 +23,7 @@ def createGraph(comments)
 		fromNode.outLinks << c.to
 		toNode.inLinks << c.from
 	}
-	
+
 	return graph
 end
 
@@ -40,15 +40,15 @@ def pageRank(graph)
 	#Initalizes each node to have 1/n as its rank
 	graph.keys.each{ |n|
 		rank[n] = init_rank
-		updatedRank[n] = Rational(0,1)	
+		updatedRank[n] = Rational(0,1)
 	}
-	
+
 	k.times do
 		graph.keys.each { |g|
 			currNode = graph[g]
 			updatedVal = Rational(0, 1)
 			if(currNode.inLinks.size == 0)
-				updatedVal = 0
+				updatedVal = 0.0
 			end
 			currNode.inLinks.each{ |inL|
 				iNode = graph[inL]
@@ -63,26 +63,26 @@ def pageRank(graph)
 			#puts rank
 			break
 		else
-			updatedRank.keys.each { |k|
+			updatedRank.keys.each{ |k|
 				updatedRank[k] = (updatedRank[k] * s) + s3
 			}
 			rank = updatedRank.clone
 		end
 	end
-	
+
 	return rank
 end
 
 
 	a = CommentNode.new("","a" ,"b")
-	b = CommentNode.new("","a", "c") 
+	b = CommentNode.new("","a", "c")
 	c = CommentNode.new("", "d", "a")
 	d = CommentNode.new("","g" ,"a")
-	e = CommentNode.new("","d" ,"h")  
+	e = CommentNode.new("","d" ,"h")
 	f = CommentNode.new("", "b", "d")
-	g = CommentNode.new("","b","e")  
+	g = CommentNode.new("","b","e")
 	h = CommentNode.new("", "e", "h")
-	i = CommentNode.new("","e", "a") 
+	i = CommentNode.new("","e", "a")
 	j = CommentNode.new("", "h", "a")
 	k = CommentNode.new("","c", "f")
 	l = CommentNode.new("", "c", "g")
@@ -91,10 +91,10 @@ end
 	res = createGraph(comments)
 	ranks = pageRank(res)
 	puts ranks
-	#h = {"askreddit" => 1.3 , "pics" => 0.1 ,}
-	#actual = ["pics" , "askreddit", ""]
-
+#h = {"askreddit" => 1.3 , "pics" => 0.1 ,}
+#actual = ["pics" , "askreddit", ""]
 #comments =load_all()
-#res= createGraph(comments)
+#res= cre
 #ranks = pageRank(res)
+#puts JSON.generate(ranks)
 #ranks.sort {|a,b| a[1] <=> b[1]}.each{ |country| print country[0],"\n" }
