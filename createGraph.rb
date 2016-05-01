@@ -30,7 +30,11 @@ end
 def pageRank(graph)
 	rank = {}
 	updatedRank = {}
-	k = 2
+	k = 100
+	s = 0.8
+	s2 = 0.2
+	n = graph.keys.size
+	s3 = Rational(s2, n)
 	init_rank = Rational(1, graph.keys.length).to_f
 
 	#Initalizes each node to have 1/n as its rank
@@ -43,6 +47,9 @@ def pageRank(graph)
 		graph.keys.each { |g|
 			currNode = graph[g]
 			updatedVal = Rational(0, 1)
+			if(currNode.inLinks.size == 0)
+				updatedVal = 0
+			end
 			currNode.inLinks.each{ |inL|
 				iNode = graph[inL]
 				inVal = rank[inL]
@@ -56,6 +63,9 @@ def pageRank(graph)
 			#puts rank
 			break
 		else
+			updatedRank.keys.each { |k|
+				updatedRank[k] = (updatedRank[k] * s) + s3
+			}
 			rank = updatedRank.clone
 		end
 	end
@@ -63,7 +73,7 @@ def pageRank(graph)
 	return rank
 end
 
-def main
+
 	a = CommentNode.new("","a" ,"b")
 	b = CommentNode.new("","a", "c") 
 	c = CommentNode.new("", "d", "a")
@@ -81,10 +91,10 @@ def main
 	res = createGraph(comments)
 	ranks = pageRank(res)
 	puts ranks
-	h = {"askreddit" => 1.3 , "pics" => 0.1 ,}
-	actual = ["pics" , "askreddit", ""]
-end
-comments =load_all()
-res= createGraph(comments)
-ranks = pageRank(res)
-ranks.sort {|a,b| a[1] <=> b[1]}.each{ |country| print country[0],"\n" }
+	#h = {"askreddit" => 1.3 , "pics" => 0.1 ,}
+	#actual = ["pics" , "askreddit", ""]
+
+#comments =load_all()
+#res= createGraph(comments)
+#ranks = pageRank(res)
+#ranks.sort {|a,b| a[1] <=> b[1]}.each{ |country| print country[0],"\n" }
