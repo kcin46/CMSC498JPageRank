@@ -23,14 +23,14 @@ def createGraph(comments)
 		fromNode.outLinks << c.to
 		toNode.inLinks << c.from
 	}
-
 	return graph
 end
+
 
 def pageRank(graph)
 	rank = {}
 	updatedRank = {}
-	k = 100
+	k = 1001
 	s = 0.8
 	s2 = 0.2
 	n = graph.keys.size
@@ -53,27 +53,25 @@ def pageRank(graph)
 			currNode.inLinks.each{ |inL|
 				iNode = graph[inL]
 				inVal = rank[inL]
-			updatedVal += Rational(inVal, iNode.outLinks.length).to_f
+				updatedVal += Rational(inVal, iNode.outLinks.length).to_f
 			}
-			#puts "currNode: " + g + "updatedVal: " + updatedVal.to_s
-			updatedRank[g] = updatedVal
+			
+			if(currNode.outLinks.size == 0)
+				updatedRank[g] = rank[g] + updatedVal
+			else
+				updatedRank[g] = updatedVal
+			end
 		}
-		if(updatedRank == rank)
-			#puts "IT CONVERGED"
-			#puts rank
-			break
-		else
-			updatedRank.keys.each{ |k|
-				updatedRank[k] = (updatedRank[k] * s) + s3
-			}
 			rank = updatedRank.clone
-		end
 	end
-
+	
+	rank.keys.each { |k|
+		rank[k] = (rank[k] * s) + s3
+	}
+	
 	return rank
 end
-
-def main
+def Main
 	a = CommentNode.new("","a" ,"b")
 	b = CommentNode.new("","a", "c")
 	c = CommentNode.new("", "d", "a")
@@ -90,12 +88,19 @@ def main
 	comments = [a,b,c,d,e,f,g,h,i,j,k,l,m]
 	res = createGraph(comments)
 	ranks = pageRank(res)
+	total = 0
+	ranks.keys.each { |k|
+		total = total + ranks[k]
+	}
 	puts ranks
-	h = {"askreddit" => 1.3 , "pics" => 0.1 ,}
-	actual = ["pics" , "askreddit", ""]
+	puts total
 end
 comments =load_all()
 res= createGraph(comments)
 ranks = pageRank(res)
+total = 0
+ranks.keys.each { |k|
+	total = total + ranks[k]
+}
 puts JSON.generate(ranks)
-#ranks.sort {|a,b| a[1] <=> b[1]}.each{ |country| print country[0],"\n" }
+puts total
