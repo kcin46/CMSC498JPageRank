@@ -98,6 +98,14 @@ def Main
 	puts ranks
 	puts total
 end
+
+def createCSV(ranks)
+	f = File.new("ranks.csv","w")
+	ranks.keys.each{
+		|sub|
+		f.puts("#{sub},#{ranks[sub]}")
+	}
+end
 comments =load_all()
 res= createGraph(comments)
 ranks = pageRank(res)
@@ -107,3 +115,4 @@ ranks.keys.each { |k|
 }
 puts JSON.generate(ranks)
 puts total
+createCSV(ranks)
