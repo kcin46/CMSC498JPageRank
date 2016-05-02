@@ -30,7 +30,7 @@ end
 def pageRank(graph)
 	rank = {}
 	updatedRank = {}
-	k = 1001
+	k = 10000
 	s = 0.8
 	s2 = 0.2
 	n = graph.keys.size
@@ -62,6 +62,9 @@ def pageRank(graph)
 				updatedRank[g] = updatedVal
 			end
 		}
+			if(rank.eql?(updatedRank))
+				puts "Converged"
+			end
 			rank = updatedRank.clone
 	end
 	

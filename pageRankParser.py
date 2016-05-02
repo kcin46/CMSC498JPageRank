@@ -13,12 +13,12 @@ backup = copy.deepcopy(data)
 
 total = 0
 for k in backup:
-	print "Back up: ",backup[k]
-	print "total prior: ",total
+#	print "Back up: ",backup[k]
+#	print "total prior: ",total
 	total = total + backup[k]
-	print "total post: ",total, "\n"
+#	print "total post: ",total, "\n"
 
-
+print total
 
 
 #for key in backup:
