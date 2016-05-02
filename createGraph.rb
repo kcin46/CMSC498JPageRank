@@ -30,7 +30,7 @@ end
 def pageRank(graph)
 	rank = {}
 	updatedRank = {}
-	k = 1001
+	k = 10000
 	s = 0.8
 	s2 = 0.2
 	n = graph.keys.size
@@ -62,6 +62,9 @@ def pageRank(graph)
 				updatedRank[g] = updatedVal
 			end
 		}
+			if(rank.eql?(updatedRank))
+				puts "Converged"
+			end
 			rank = updatedRank.clone
 	end
 	
@@ -96,11 +99,16 @@ def Main
 	puts total
 end
 
-def createCSV(ranks)
+def createCSV(ranks, graph)
 	f = File.new("ranks.csv","w")
 	ranks.keys.each{
 		|sub|
-		f.puts("#{sub},#{ranks[sub]}")
+		ratio = 0.0
+		ratio = graph[sub].inLinks.length/graph[sub].outLinks.length.to_f
+		if(graph[sub].outLinks.length == 0)
+			ratio = 0.0
+		end
+		f.puts("#{sub},#{ranks[sub]},#{ratio}")
 	}
 end
 comments =load_all()
@@ -112,4 +120,4 @@ ranks.keys.each { |k|
 }
 puts JSON.generate(ranks)
 puts total
-createCSV(ranks)
+createCSV(ranks, res)
