@@ -9,3 +9,5 @@ In order to compute those results run the following command:
 The script will create a graph using the json files stored in the json_folder, run the scaled PageRank algorithm and output the results in a file called 'ranks.csv'.
 
 The resulting file 'ranks.csv' is a csv where each line represents a subreddit and it's corresponding page rank value. The results are sorted in descending order by PageRank value. 
+
+The report on the project is in the CMSC498JFinalReport.pdf
