@@ -1,4 +1,4 @@
-All of the scripts are written in Ruby. In order to run the program please use a version of Ruby > 2.0
+All of the scripts are written in Ruby. In order to run the program please use a version of Ruby >= 2.3
 
 The results and analysis of the dataset is done by the pageRank.rb file.
 
