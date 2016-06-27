@@ -30,7 +30,9 @@ default subreddits. However, it is not shown on the front page but w
 standard/evaluation metric.
 
 
-__Approach__:  Before providing a detailed overview of the approach, some description of reddit’s 
+__Approach__:     
+
+Before providing a detailed overview of the approach, some description of reddit’s 
 community culture is needed. A common action taken by users is to comment on a post with a 
 link(s) to other subreddit(s) as seen in ​
 __Figure 2​__
