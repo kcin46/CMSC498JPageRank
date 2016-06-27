@@ -64,11 +64,10 @@ will be the trending subreddits as described previously.  
 __Data Collection:__  
 We decided to use recent data and in order to do so we had to create our own dataset. To 
 do so we had to interface with reddit’s api. The replies from reddit’s api consisted of JSON 
-objects hence the dataset used is in JSON. The stats of the dataset are as follows: 
-● 132,678 comments  
-● 2500 comments linked to a subreddit 
-
-● Of the comments with links, 147 were unique(didn’t create a edge that already 
+objects hence the dataset used is in JSON. The stats of the dataset are as follows:  
+● 132,678 comments  
+●2500 comments linked to a subreddit  
+●Of the comments with links, 147 were unique(didn’t create a edge that already 
 existed in the graph), did not point to itself and pointed to one of the 100 
 subreddits we were collecting from 
 Shown below is a image of the constructed graph 
@@ -83,31 +82,26 @@ __Evaluation Method:__
 In order to predict the trending subreddits, we used the scaled PageRank algorithm.  The 
 algorithm considers every time a subreddit is referenced in a comment from another subreddit 
 and gives an appropriate score for each subreddit.  To put it simply, the more references a 
-subreddit has corresponds to a higher PageRank score.  
-  
-PageRank Initialization: 
-­Each node represents a subreddit and a directed edge from Node A to Node B represents 
-A referencing B in a comment. 
-­The score for each node in the graph is initialized to a PageRank score of 1/N, where N 
-is the number of nodes in the graph. 
-­We chose a K such that after running the PageRank Update Rule K times, the graph 
-reaches equilibrium.  This means that no matter how many more times the Update Rule is 
+subreddit has corresponds to a higher PageRank score.  
 
-applied, the PageRank score for all nodes remains the same. For this algorithm, K = 
-10,000. 
-­A scaling factor S is chosen in order to account for graph properties that lead to 
-inaccurate scores.  For this algorithm, S = 0.8 
-­After every iteration of the PageRank Update rule, the sum of every node’s PageRank 
+PageRank Initialization:  
+*Each node represents a subreddit and a directed edge from Node A to Node B represents.A referencing B in a comment. *The score for each node in the graph is initialized to a PageRank score of 1/N, where N 
+is the number of nodes in the graph.  *We chose a K such that after running the PageRank Update Rule K times, the graph 
+reaches equilibrium.  This means that no matter how many more times the Update Rule is applied, the PageRank score for all nodes remains the same. For this algorithm, K = 
+10,000.  
+*A scaling factor S is chosen in order to account for graph properties that lead to 
+inaccurate scores.  For this algorithm, S = 0.8  *After every iteration of the PageRank Update rule, the sum of every node’s PageRank 
 should be equal to 1. 
  
- ­The PageRank Update Rule: 
-­Each node will give its current PageRank/Number of outgoing edges to each node that is 
-the recipient of the outgoing link. 
-­One complete iteration consists of the above rule running for every node once. 
-­After each iteration, the PageRank score for every node will be multiplied by the scaling 
-factor S, in this case 0.8, and the result of that will be increased by (1 ­ S)/N. 
-­The above steps will happen K times. 
-  
+
+The PageRank Update Rule:  
+*Each node will give its current PageRank/Number of outgoing edges to each node that is 
+the recipient of the outgoing link.  
+*One complete iteration consists of the above rule running for every node once.  
+*After each iteration, the PageRank score for every node will be multiplied by the scaling 
+factor S, in this case 0.8, and the result of that will be increased by (1 ­ S)/N.  
+*The above steps will happen K times.  
+
 Once the PageRank algorithm was completed, we had a list of size N corresponding to each 
 subreddit’s PageRank score.  In order to make our results more accurate, we used a scaling factor 
 as mentioned above.  This was necessary because of issues with some of the graph’s 
@@ -146,6 +140,7 @@ Reddit​
 
  ![Alt text](/stdev.png)
 __Figure 4__
+
 Although the results produced were inaccurate when compared to the golden standard there are 
 several factors that contributed to the results that were produced. Reddit is a large community 
 with nearly nine hundred of thousand subreddits and many more posts and comments. Comments 
@@ -156,9 +151,7 @@ period is not nearly sufficient to accurately predict trending/active s
  
  In addition, the Reddit API requires many calls to be made to gather the required data and as a 
 result we had to limit our dataset in order for the runtime to be within a reasonable timeframe. 
-As we reviewed the graph in Figure 3 we created based on in and out links, we noticed a lot of 
-
-places where the PageRank score would get to but had no way to move because the node did not 
+As we reviewed the graph in __Figure 3__ we created based on in and out links, we noticed a lot of places where the PageRank score would get to but had no way to move because the node did not 
 have any out links. This is a major reason why we had skewed results. We also noticed while 
 scouring through the comments that users generally link to smaller more obscure subreddits 
 rather than large, known subreddits. Because users do not tend to link the larger subreddits this 

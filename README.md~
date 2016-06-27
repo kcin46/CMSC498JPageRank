@@ -143,12 +143,9 @@ twelve, the subreddits ranked 17­24, bucket 3, had the lowest standar
 these subreddits were the closest to their positioning on the active/trending subreddit list 
 acquired from ​
 Reddit​
-. 
-  
 
- 
-Figure 4 
- 
+ ![Alt text](/stdev.png)
+__Figure 4__
 Although the results produced were inaccurate when compared to the golden standard there are 
 several factors that contributed to the results that were produced. Reddit is a large community 
 with nearly nine hundred of thousand subreddits and many more posts and comments. Comments 
