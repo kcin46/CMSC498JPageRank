@@ -1,12 +1,10 @@
 Predicting Trending Subreddits 
 ==============================
 
-By Nick Chao, Azam  Abdulkadir, Kaval Patel 
- 
- 
-__Introduction__:
+By Nick Chao, Azam Abdulkadir, Kaval Patel  
 
- Reddit, a social media website dedicated to news and discussion is one of the most 
+__Introduction__:           
+Reddit, a social media website dedicated to news and discussion is one of the most 
 popular sites on the internet and has an open api. This makes it interesting and easy for data 
 collection and analysis. Before explaining the problem and approach, one must understand the 
 basics of reddit. The website is broken into categories or “subreddits” where a subreddit is 
@@ -18,12 +16,10 @@ post is limited to the subreddit specified by the user who created t
  half dozen or so non default subreddits that have seen a particularly high amount of activity lately, 
 and list them at the top of the front page”. We believe this to be an inaccurate way to measure 
 trending subreddits and a more accurate representation would include the default subreddits.  
- 
- 
- ![Alt text](/trending.png)  __Figure 1__ 
 
-
-Getting an accurate representation of trending subreddits is important because it provides 
+ ![Alt text](/trending.png)  
+ __Figure 1__  
+ Getting an accurate representation of trending subreddits is important because it provides 
 the user with subreddits that could have interesting content currently posted to them.  
 In addition, reddit provides a list of recently ‘popular’ subreddits which does include the 
 default subreddits. However, it is not shown on the front page but we will use it as our gold 
@@ -31,17 +27,15 @@ standard/evaluation metric.
 
 
 __Approach__:     
-
 Before providing a detailed overview of the approach, some description of reddit’s 
 community culture is needed. A common action taken by users is to comment on a post with a 
 link(s) to other subreddit(s) as seen in ​
 __Figure 2​__
-.  
+.
+
   ![Alt text](/subreddit_ref.png)
+__Figure 2__
 
-
-__Figure 2__ 
- 
 Therefore, we believed a good model of calculating trending subreddits to consist of 
 running PageRank on a graph where each node is a subreddit and a directed edge (n1,n2) exists if 
 in a post to subreddit n1 there exists a comment that links to subreddit n2. We then sort the 
@@ -67,7 +61,7 @@ Pagerank algorithm on the resulting graph. Sort the subreddits by Page
 will be the trending subreddits as described previously.  
  
 
-Data Collection: 
+__Data Collection:__  
 We decided to use recent data and in order to do so we had to create our own dataset. To 
 do so we had to interface with reddit’s api. The replies from reddit’s api consisted of JSON 
 objects hence the dataset used is in JSON. The stats of the dataset are as follows: 
@@ -78,15 +72,14 @@ objects hence the dataset used is in JSON. The stats of the dataset�
 existed in the graph), did not point to itself and pointed to one of the 100 
 subreddits we were collecting from 
 Shown below is a image of the constructed graph 
+
+
+ ![Alt text](/graph.png)
  
+__Figure 3__
  
 
- 
-Figure 3 
- 
-
-Evaluation Method: 
- 
+__Evaluation Method:__  
 In order to predict the trending subreddits, we used the scaled PageRank algorithm.  The 
 algorithm considers every time a subreddit is referenced in a comment from another subreddit 
 and gives an appropriate score for each subreddit.  To put it simply, the more references a 
@@ -124,8 +117,7 @@ There were nodes that did not have any out­links, which also led to
 
  
  
-Experimental Results: 
-  
+__Experimental Results__:  
 After refining our total dataset and creating the graph, the scaled PageRank algorithm 
 was used to generate a PageRank score for each of the subreddits. Once each subreddit was 
 assigned a PageRank score, the subreddits were ordered in descending order. Once the ordering 
@@ -151,12 +143,9 @@ twelve, the subreddits ranked 17­24, bucket 3, had the lowest standar
 these subreddits were the closest to their positioning on the active/trending subreddit list 
 acquired from ​
 Reddit​
-. 
-  
 
- 
-Figure 4 
- 
+ ![Alt text](/stdev.png)
+__Figure 4__
 Although the results produced were inaccurate when compared to the golden standard there are 
 several factors that contributed to the results that were produced. Reddit is a large community 
 with nearly nine hundred of thousand subreddits and many more posts and comments. Comments 
