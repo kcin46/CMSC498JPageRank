@@ -3,7 +3,9 @@ Predicting Trending Subreddits 
 By Nick Chao, Azam  Abdulkadir, Kaval Patel 
  
  
-__Introduction__: Reddit, a social media website dedicated to news and discussion is one of the most 
+__Introduction__:
+
+ Reddit, a social media website dedicated to news and discussion is one of the most 
 popular sites on the internet and has an open api. This makes it interesting and easy for data 
 collection and analysis. Before explaining the problem and approach, one must understand the 
 basics of reddit. The website is broken into categories or “subreddits” where a subreddit is 
@@ -11,15 +13,8 @@ dedicated to a specific topic. For example, the subreddit Politics is�
 content relating to politics. Other users can see, comment, upvote( a feature that allows a user to 
 promote the post), and downvote(a feature that allows a user to demote the post). However, a 
 post is limited to the subreddit specified by the user who created the content. As of February 
-2016 there were 853,824 subreddits a user could post to.One feature of reddit is a trending subreddit bar on the front page ​
-
-(__Figure 1__)​
-
-
-. However, 
-according to an article by techcrunch, for the trending feature shown here reddit selects “a​
- half 
-dozen or so non­default subreddits that have seen a particularly high amount of activity lately, 
+2016 there were 853,824 subreddits a user could post to.One feature of reddit is a trending subreddit bar on the front page (__Figure 1__)​.However,according to an article by techcrunch, for the trending feature shown here reddit selects “a​
+ half dozen or so non default subreddits that have seen a particularly high amount of activity lately, 
 and list them at the top of the front page”. We believe this to be an inaccurate way to measure 
 trending subreddits and a more accurate representation would include the default subreddits.  
  
@@ -27,6 +22,8 @@ trending subreddits and a more accurate representation would include th
  ![Alt text](/trending.png)
  
 __Figure 1__ 
+
+
 Getting an accurate representation of trending subreddits is important because it provides 
 the user with subreddits that could have interesting content currently posted to them.  
 In addition, reddit provides a list of recently ‘popular’ subreddits which does include the 
@@ -34,6 +31,7 @@ default subreddits. However, it is not shown on the front page but w
 standard/evaluation metric. 
   
 __Approach__:  
+
 Before providing a detailed overview of the approach, some description of reddit’s 
 community culture is needed. A common action taken by users is to comment on a post with a 
 link(s) to other subreddit(s) as seen in ​
