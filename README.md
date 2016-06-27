@@ -3,9 +3,7 @@ Predicting Trending Subreddits 
 By Nick Chao, Azam  Abdulkadir, Kaval Patel 
  
  
-__Introduction__:    
- 
-Reddit, a social media website dedicated to news and discussion is one of the most 
+__Introduction__: Reddit, a social media website dedicated to news and discussion is one of the most 
 popular sites on the internet and has an open api. This makes it interesting and easy for data 
 collection and analysis. Before explaining the problem and approach, one must understand the 
 basics of reddit. The website is broken into categories or “subreddits” where a subreddit is 
