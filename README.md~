@@ -12,7 +12,7 @@ dedicated to a specific topic. For example, the subreddit Politics is�
 content relating to politics. Other users can see, comment, upvote( a feature that allows a user to 
 promote the post), and downvote(a feature that allows a user to demote the post). However, a 
 post is limited to the subreddit specified by the user who created the content. As of February 
-2016 there were 853,824 subreddits a user could post to.One feature of reddit is a trending subreddit bar on the front page (__Figure 1__)​.However,according to an article by techcrunch, for the trending feature shown here reddit selects “a​
+2016 there were 853,824 subreddits a user could post to.One feature of reddit is a trending subreddit bar on the front page  (__Figure 1__)​.However,according to an article by techcrunch, for the trending feature shown here reddit selects “a​
  half dozen or so non default subreddits that have seen a particularly high amount of activity lately, 
 and list them at the top of the front page”. We believe this to be an inaccurate way to measure 
 trending subreddits and a more accurate representation would include the default subreddits.  
@@ -85,32 +85,30 @@ and gives an appropriate score for each subreddit.  To put it simply
 subreddit has corresponds to a higher PageRank score.  
 
 PageRank Initialization:  
-*Each node represents a subreddit and a directed edge from Node A to Node B represents.A referencing B in a comment. *The score for each node in the graph is initialized to a PageRank score of 1/N, where N 
-is the number of nodes in the graph.  *We chose a K such that after running the PageRank Update Rule K times, the graph 
+●Each node represents a subreddit and a directed edge from Node A to Node B represents.A referencing B in a comment.
+●The score for each node in the graph is initialized to a PageRank score of 1/N, where N is the number of nodes in the graph. ●We chose a K such that after running the PageRank Update Rule K times, the graph 
 reaches equilibrium.  This means that no matter how many more times the Update Rule is applied, the PageRank score for all nodes remains the same. For this algorithm, K = 
 10,000.  
-*A scaling factor S is chosen in order to account for graph properties that lead to 
-inaccurate scores.  For this algorithm, S = 0.8  *After every iteration of the PageRank Update rule, the sum of every node’s PageRank 
+● A scaling factor S is chosen in order to account for graph properties that lead to 
+inaccurate scores.  For this algorithm, S = 0.8  ●After every iteration of the PageRank Update rule, the sum of every node’s PageRank 
 should be equal to 1. 
  
 
 The PageRank Update Rule:  
-*Each node will give its current PageRank/Number of outgoing edges to each node that is 
+● Each node will give its current PageRank/Number of outgoing edges to each node that is 
 the recipient of the outgoing link.  
-*One complete iteration consists of the above rule running for every node once.  
-*After each iteration, the PageRank score for every node will be multiplied by the scaling 
+● One complete iteration consists of the above rule running for every node once.  
+● After each iteration, the PageRank score for every node will be multiplied by the scaling 
 factor S, in this case 0.8, and the result of that will be increased by (1 ­ S)/N.  
-*The above steps will happen K times.  
+● The above steps will happen K times.  
 
 Once the PageRank algorithm was completed, we had a list of size N corresponding to each 
 subreddit’s PageRank score.  In order to make our results more accurate, we used a scaling factor 
 as mentioned above.  This was necessary because of issues with some of the graph’s 
 characteristics.  One of the major issues was a cycle found between two nodes.  This led to the 
 score being trapped between the two nodes instead of being further passed around in the graph. 
-There were nodes that did not have any out­links, which also led to score being trapped.   
+There were nodes that did not have any out­links, which also led to score being trapped.  
 
- 
- 
 __Experimental Results__:  
 After refining our total dataset and creating the graph, the scaled PageRank algorithm 
 was used to generate a PageRank score for each of the subreddits. Once each subreddit was 
