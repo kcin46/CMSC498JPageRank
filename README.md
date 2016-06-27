@@ -34,7 +34,7 @@ __Figure 2​__
 .
 
   ![Alt text](/subreddit_ref.png)  
-<p style="text-align: center;">  <b> __Figure 2__</b></p>
+<p style="text-align: center;">  <b> Figure 2</b></p>
 
 Therefore, we believed a good model of calculating trending subreddits to consist of 
 running PageRank on a graph where each node is a subreddit and a directed edge (n1,n2) exists if 
