@@ -1,5 +1,6 @@
 Predicting Trending Subreddits 
 ==============================
+
 By Nick Chao, Azam  Abdulkadir, Kaval Patel 
  
  
@@ -28,8 +29,9 @@ Getting an accurate representation of trending subreddits is important 
 the user with subreddits that could have interesting content currently posted to them.  
 In addition, reddit provides a list of recently ‘popular’ subreddits which does include the 
 default subreddits. However, it is not shown on the front page but we will use it as our gold 
-standard/evaluation metric. 
-  
+standard/evaluation metric.
+
+
 __Approach__:  
 
 Before providing a detailed overview of the approach, some description of reddit’s 
