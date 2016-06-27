@@ -11,11 +11,11 @@ dedicated to a specific topic. For example, the subreddit Politics is�
 content relating to politics. Other users can see, comment, upvote( a feature that allows a user to 
 promote the post), and downvote(a feature that allows a user to demote the post). However, a 
 post is limited to the subreddit specified by the user who created the content. As of February 
-2016 there were 853,824 subreddits a user could post to.  
- 
-One feature of reddit is a trending subreddit bar on the front page ​
+2016 there were 853,824 subreddits a user could post to.One feature of reddit is a trending subreddit bar on the front page ​
 
 (__Figure 1__)​
+
+
 . However, 
 according to an article by techcrunch, for the trending feature shown here reddit selects “a​
  half 
